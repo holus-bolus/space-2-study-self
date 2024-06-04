@@ -11,6 +11,7 @@ import AppTextField from '~/components/app-text-field/AppTextField'
 import AppButton from '~/components/app-button/AppButton'
 
 import { styles } from '~/containers/guest-home-page/login-form/LoginForm.styles'
+import { useEffect, useState } from 'react'
 
 const LoginForm = ({
   handleSubmit,
@@ -21,7 +22,6 @@ const LoginForm = ({
 }) => {
   const { inputVisibility: passwordVisibility, showInputText: showPassword } =
     useInputVisibility(errors.password)
-
   const { authLoading } = useSelector((state) => state.appMain)
 
   const { openModal } = useModalContext()
@@ -31,6 +31,10 @@ const LoginForm = ({
   const openForgotPassword = () => {
     openModal({ component: <ForgotPassword /> })
   }
+  const [isDisabled, setIsDisabled] = useState(true)
+  useEffect(() => {
+    setIsDisabled(Object.keys(errors).some((key) => errors[key]))
+  }, [errors])
 
   return (
     <Box component='form' onSubmit={handleSubmit} sx={styles.form}>
@@ -48,7 +52,6 @@ const LoginForm = ({
         type='email'
         value={data.email}
       />
-
       <AppTextField
         InputProps={passwordVisibility}
         errorMsg={t(errors.password)}
@@ -60,7 +63,6 @@ const LoginForm = ({
         type={showPassword ? 'text' : 'password'}
         value={data.password}
       />
-
       <Typography
         component={ButtonBase}
         onClick={openForgotPassword}
@@ -69,8 +71,8 @@ const LoginForm = ({
       >
         {t('login.forgotPassword')}
       </Typography>
-
       <AppButton
+        disabled={isDisabled}
         loading={authLoading}
         size='large'
         sx={styles.loginButton}
