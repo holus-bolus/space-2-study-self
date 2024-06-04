@@ -30,7 +30,12 @@ const Navbar = () => {
   const { t } = useTranslation()
 
   const homePath = userRole ? guestRoutes[userRole].path : guestRoutes.home.path
-
+  const scrollThePageToTheTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
   const navigationItems = useMemo(() => {
     if (userRole === student) {
       return Object.values(studentRoutes.navBar)
@@ -73,6 +78,7 @@ const Navbar = () => {
     <Box sx={styles.header}>
       <Button
         component={Link}
+        onClick={scrollThePageToTheTop}
         size={'small'}
         sx={styles.logoButton}
         to={homePath}
