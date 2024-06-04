@@ -25,7 +25,15 @@ export const styles = {
     '& ol': {
       flexWrap: 'nowrap',
       overflowX: 'auto',
+      display: 'flex',
+      alignItems: 'center',
+      verticalAlign: 'middle',
       '&::-webkit-scrollbar': { display: 'none' }
+    },
+    '& li': {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     }
   }
 }
