@@ -5,7 +5,7 @@ import { markFirstLoginComplete } from '~/redux/reducer'
 import { StepProvider } from '~/context/step-context'
 
 import AddPhotoStep from '~/containers/tutor-home-page/add-photo-step/AddPhotoStep'
-import GeneralInfoStep from '~/containers/tutor-home-page/general-info-step/GeneralInfoStep'
+
 import LanguageStep from '~/containers/tutor-home-page/language-step/LanguageStep'
 import SubjectsStep from '~/containers/tutor-home-page/subjects-step/SubjectsStep'
 
@@ -16,6 +16,7 @@ import {
   tutorStepLabels
 } from '~/components/user-steps-wrapper/constants'
 import { student } from '~/constants'
+import GeneralInfoStep from '~/containers/tutor-home-page/general-info-step/GeneralInfoStep'
 
 const UserStepsWrapper = ({ userRole }) => {
   const [isUserFetched, setIsUserFetched] = useState(false)
