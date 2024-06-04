@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose')
 const userSchema = require('~/models/user')
-const offerSchema = require('~/models/offer')
 const { USER, OFFER } = require('~/consts/models')
 const {
   enums: { MAIN_ROLE_ENUM }
@@ -102,23 +101,18 @@ reviewSchema.statics.calcAverageRatings = async function (targetUserId, targetUs
   ])
 
   if (stats.length) {
-    const tutor = {
-      'totalReviews.tutor': stats[0].totalReviews.tutor,
-      'averageRating.tutor': stats[0].averageRating.tutor
-    }
-
-    const tutorRating = { authorAvgRating: stats[0].averageRating.tutor }
-
-    await userSchema.findOneAndUpdate({ _id: targetUserId, role: targetUserRole }, targetUserRole === tutor)
-
-    await offerSchema.updateMany({ author: targetUserId }, tutorRating)
+    await userSchema.findOneAndUpdate(
+      { _id: targetUserId, role: targetUserRole },
+      {
+        [`totalReviews.${targetUserRole}`]: stats[0].totalReviews[targetUserRole],
+        [`averageRating.${targetUserRole}`]: stats[0].averageRating[targetUserRole]
+      }
+    )
   } else {
     await userSchema.findOneAndUpdate(
       { _id: targetUserId, role: targetUserRole },
       { totalReviews: { student: 0, tutor: 0 }, averageRating: { student: 0, tutor: 0 } }
     )
-
-    await offerSchema.updateMany({ author: targetUserId }, { authorAvgRating: 0 })
   }
 }
 

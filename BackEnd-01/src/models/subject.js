@@ -1,15 +1,18 @@
 const { Schema, model } = require('mongoose')
 const { CATEGORY, SUBJECT } = require('~/consts/models')
+const { FIELD_CANNOT_BE_EMPTY } = require('~/consts/errors')
 
 const subjectSchema = new Schema(
   {
     name: {
       type: String,
-      unique: true
+      required: [true, FIELD_CANNOT_BE_EMPTY('name')],
+      trim: true
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: CATEGORY
+      ref: CATEGORY,
+      required: [true, FIELD_CANNOT_BE_EMPTY('category')]
     },
     totalOffers: {
       student: {
@@ -25,6 +28,6 @@ const subjectSchema = new Schema(
   { timestamps: true, versionKey: false }
 )
 
-subjectSchema.index({ name: 1 }, { unique: true })
+subjectSchema.index({ name: 1, category: 1 }, { unique: true })
 
 module.exports = model(SUBJECT, subjectSchema)

@@ -1,9 +1,9 @@
 const User = require('~/models/user')
 const uploadService = require('~/services/upload')
-const { USER } = require('~/consts/upload')
 const { hashPassword } = require('~/utils/passwordHelper')
 const { createError } = require('~/utils/errorsHelper')
 
+const { USER } = require('~/consts/upload')
 const { DOCUMENT_NOT_FOUND, ALREADY_REGISTERED } = require('~/consts/errors')
 const filterAllowedFields = require('~/utils/filterAllowedFields')
 const { allowedUserFieldsForUpdate } = require('~/validation/services/user')
@@ -84,8 +84,8 @@ const userService = {
 
     const user = await User.findById(id).lean().exec()
 
-    if (user.photo) {
-      await uploadService.deleteFile(user.photo, USER)
+    if (user.photo && updateData.photo) {
+      await uploadService.deleteFile(user.photo)
     }
 
     if (updateData.photo) {
