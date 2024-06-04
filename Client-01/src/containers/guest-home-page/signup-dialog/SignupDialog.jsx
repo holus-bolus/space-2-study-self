@@ -20,6 +20,7 @@ import student from '~/assets/img/signup-dialog/student.svg'
 import tutor from '~/assets/img/signup-dialog/tutor.svg'
 
 import { styles } from '~/containers/guest-home-page/signup-dialog/SignupDialog.styles'
+import { firstName } from '~/utils/validations/login'
 
 const SignupDialog = ({ type }) => {
   const { t } = useTranslation()
@@ -62,6 +63,9 @@ const SignupDialog = ({ type }) => {
         email: '',
         password: '',
         confirmPassword: ''
+      },
+      validations: {
+        firstName
       }
     })
 

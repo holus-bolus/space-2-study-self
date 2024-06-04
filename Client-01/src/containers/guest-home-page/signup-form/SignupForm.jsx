@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import HashLink from '~/components/hash-link/HashLink'
@@ -31,12 +31,16 @@ const SignupForm = ({
     inputVisibility: confirmPasswordVisibility,
     showInputText: showConfirmPassword
   } = useInputVisibility(errors.confirmPassword)
+  const [disabled, setDisabled] = useState(true)
   const { authLoading } = useSelector((state) => state.appMain)
 
   const handleOnAgreementChange = () => {
     setIsAgreementChecked((prev) => !prev)
   }
-
+  useEffect(() => {
+    const hasErrors = Object.keys(errors).some((key) => errors[key])
+    setDisabled(hasErrors || !isAgreementChecked)
+  }, [errors, isAgreementChecked])
   const policyAgreement = (
     <Box sx={styles.box}>
       <Typography variant='subtitle2'>{t('signup.iAgree')}</Typography>
@@ -69,6 +73,7 @@ const SignupForm = ({
       <Box sx={{ display: { md: 'block', lg: 'flex' }, gap: '15px' }}>
         <AppTextField
           autoFocus
+          errorMsg={t(errors.firstName)}
           fullWidth
           label={t('common.labels.firstName')}
           onBlur={handleBlur('firstName')}
@@ -137,7 +142,7 @@ const SignupForm = ({
       </Box>
 
       <AppButton
-        disabled={!isAgreementChecked}
+        disabled={disabled}
         loading={authLoading}
         sx={styles.signupButton}
         type='submit'

@@ -63,9 +63,7 @@ export const useForm = ({
 
   const handleBlur = (key) => (event) => {
     setDirty(!isEqual(data, initialValues))
-
     const valid = validateValue(key, event.target.value)
-
     setErrors((prev) => ({
       ...prev,
       [key]: valid ?? ''
